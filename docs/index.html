@@ -34,8 +34,8 @@
   <body>
     <h1>Available Files</h1>
     <ul>
-      {% assign base_directories = site.static_files | map: "path" | map: "split:'/'" | map: "first" | uniq %}
-
+      {% comment %} {% assign base_directories = site.static_files | map: "path" | map: "split:'/'" | map: "first" | uniq %} {% endcomment %}
+      {% assign base_directories = site.static_files | map: "path" %}
       {% for file in site.static_files %}
         <li>{{ file.path }}</li>
       {% endfor %}
