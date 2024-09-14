@@ -35,33 +35,33 @@
     <h1>Available Files</h1>
     <ul>
       {% comment %} {% assign base_directories = site.static_files | map: "path" | map: "split:'/'" | map: "first" | uniq %} {% endcomment %}
-      {% assign base_directories = site.static_files | map: "path" | map: "split:'/'" %}
+      {% assign base_directories = site.static_files | map: "path" | split: '/' %}
       {% for file in site.static_files %}
         <li>{{ file.path }}</li>
       {% endfor %}
 
       <p>base_directories: {{ base_directories | join: ", " }}</p>
     {% comment %} 
-                  {% for dir in base_directories %}
-                    <li class="folder">{{ dir }}
-                      <ul>
-                        {% assign files_in_dir = site.static_files | where_exp: "file", "file.path contains dir" %}
-                        {% assign directories = files_in_dir | group_by_exp: "file", "file.path | split: '/' | slice: 0, file.path | split: '/' | size - 2 | join: '/'" %}
-    
-                        {% for subdir in directories %}
-                          <li class="folder">{{ subdir.name | replace_first: dir, "" }}/
+                        {% for dir in base_directories %}
+                          <li class="folder">{{ dir }}
                             <ul>
-                              {% for file in subdir.items %}
-                                <li>
-                                  <a href="{{ site.baseurl }}{{ file.path }}">{{ file.name }}</a>
+                              {% assign files_in_dir = site.static_files | where_exp: "file", "file.path contains dir" %}
+                              {% assign directories = files_in_dir | group_by_exp: "file", "file.path | split: '/' | slice: 0, file.path | split: '/' | size - 2 | join: '/'" %}
+      
+                              {% for subdir in directories %}
+                                <li class="folder">{{ subdir.name | replace_first: dir, "" }}/
+                                  <ul>
+                                    {% for file in subdir.items %}
+                                      <li>
+                                        <a href="{{ site.baseurl }}{{ file.path }}">{{ file.name }}</a>
+                                      </li>
+                                    {% endfor %}
+                                  </ul>
                                 </li>
                               {% endfor %}
                             </ul>
                           </li>
-                        {% endfor %}
-                      </ul>
-                    </li>
-              {% endfor %} {% endcomment %}
+                  {% endfor %} {% endcomment %}
     </ul>
   </body>
 </html>
