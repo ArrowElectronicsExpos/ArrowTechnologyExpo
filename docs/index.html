@@ -35,6 +35,10 @@
     <h1>Available Files</h1>
     <ul>
       {% assign base_directories = site.static_files | map: "path" | map: "split" | map: first | uniq %}
+      <p>
+        Static Files: {{ site.static_files }}</p>
+      <p>
+        base_directories: {{ base_directories }}</p>
 
       {% for dir in base_directories %}
         <li class="folder">{{ dir }}/
