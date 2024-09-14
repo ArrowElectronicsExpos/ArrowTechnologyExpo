@@ -1,62 +1,73 @@
 ---
 ---
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File Directory</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-        }
-        ul {
-            list-style-type: none;
-            padding-left: 0;
-        }
-        li {
-            margin-bottom: 10px;
-        }
-        a {
-            text-decoration: none;
-            color: #333;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-        .folder {
-            font-weight: bold;
-        }
-    </style>
-</head>
-<body>
-    <h1>Available Files</h1>
-    <ul>
-        {% assign files_by_dir = site.static_files | group_by_exp: "file", "file.path | split: '/' | slice: 0, -1 | join: '/'" %}
-        {% for dir in files_by_dir %}
-            <li class="folder">{{ dir.name | replace_first: site.baseurl, "" }}
-                <ul>
-                    {% for file in dir.items %}
-                        {% if file.path contains dir.name %}
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>File Directory</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                padding: 20px;
+            }
+            ul {
+                list-style-type: none;
+                padding-left: 0;
+            }
+            li {
+                margin-bottom: 10px;
+            }
+            a {
+                text-decoration: none;
+                color: #333;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+            .folder {
+                font-weight: bold;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Available Files</h1>
+        <ul>
+            {% assign base_directory = "docs/Chicago/Suppliers/MarcomForms" %}
+            {% assign files_by_dir = site.static_files | where_exp: "file", "file.path contains base_directory" %}
+            
+            {% assign directories = files_by_dir | group_by_exp: "file", "file.path | split: '/' | slice: 0, file.path | split: '/' | size - 2 | join: '/'" %}
+    
+            {% for dir in directories %}
+                <li class="folder">{{ dir.name | remove: base_directory | prepend: base_directory }}/
+                    <ul>
+                        {% for file in dir.items %}
                             {% assign remaining_path = file.path | remove: dir.name | remove_first: '/' %}
                             {% if remaining_path contains '/' %}
-                                <!-- Recursively render subdirectories -->
-                                {% assign subdir = remaining_path | split: '/' | first %}
-                                <li class="folder">{{ subdir }}
+                                <!-- Handle nested directories -->
+                                {% assign subdirs = remaining_path | split: '/' %}
+                                <li class="folder">{{ subdirs | first }}
                                     <ul>
-                                        <li><a href="{{ site.baseurl }}{{ file.path }}">{{ file.name }}</a></li>
+                                        {% for subdir_file in directories %}
+                                            {% if subdir_file.name contains dir.name %}
+                                                {% assign sub_remaining_path = subdir_file.items[0].path | remove: dir.name | remove_first: '/' %}
+                                                {% if sub_remaining_path contains '/' %}
+                                                    <li class="folder">{{ sub_remaining_path | split: '/' | first }}/</li>
+                                                {% endif %}
+                                                <li><a href="{{ site.baseurl }}{{ subdir_file.items[0].path }}">{{ subdir_file.items[0].name }}</a></li>
+                                            {% endif %}
+                                        {% endfor %}
                                     </ul>
                                 </li>
                             {% else %}
-                                <!-- Render files in the current directory -->
+                                <!-- Handle files in the current directory -->
                                 <li><a href="{{ site.baseurl }}{{ file.path }}">{{ file.name }}</a></li>
                             {% endif %}
-                        {% endif %}
-                    {% endfor %}
-                </ul>
-            </li>
-        {% endfor %}
-    </ul>
-</body>
-</html>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endfor %}
+        </ul>
+    </body>
+    </html>
+    
