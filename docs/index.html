@@ -34,8 +34,8 @@
   <body>
     <h1>Available Files</h1>
     <ul>
-      {% assign base_directory = "docs/Chicago/Suppliers/MarcomForms" %}
-      {% assign files_by_dir = site.static_files | where_exp: "file", "file.path contains base_directory" %}
+      {% assign base_directory = "" %}
+      {% assign files_by_dir = site.static_files %}
 
       {% assign directories = files_by_dir | group_by: "directory" %}
 
