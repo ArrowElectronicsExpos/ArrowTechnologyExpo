@@ -34,14 +34,15 @@
   <body>
     <h1>Available Files</h1>
     <ul>
-      {% assign base_directories = site.static_files | map: "path" | map: "split" | map: first | uniq %}
+      {% assign base_directories = site.static_files | map: "path" | map: "split:" "/" | map: first | uniq %}
+
       {% for file in site.static_files %}
         <li>{{ file.path }}</li>
-    {% endfor %}
+      {% endfor %}
         base_directories: {{ base_directories }}</p>
 
       {% for dir in base_directories %}
-        <li class="folder">{{ dir }}/
+        <li class="folder">{{ dir }}
           <ul>
             {% assign files_in_dir = site.static_files | where_exp: "file", "file.path contains dir" %}
             {% assign directories = files_in_dir | group_by_exp: "file", "file.path | split: '/' | slice: 0, file.path | split: '/' | size - 2 | join: '/'" %}
