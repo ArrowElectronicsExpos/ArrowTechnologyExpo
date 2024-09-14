@@ -5,16 +5,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>File Directory</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        a {
+            text-decoration: none;
+            color: #333;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .folder {
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    <p>Hello!</p>
-
     <h1>Available Files</h1>
     <ul>
-        {% assign directory = site.static_files  %}
-        {% for file in directory %}
-            <li><a href="{{ file.path }}">{{ file.name }}</a></li>
+        {% assign files_by_dir = site.static_files | group_by_exp: "file", "file.path | split: '/' | slice: 0, -1 | join: '/'" %}
+        {% for dir in files_by_dir %}
+            <li class="folder">{{ dir.name | replace_first: site.baseurl, "" }}
+                <ul>
+                    {% for file in dir.items %}
+                        {% if file.path contains dir.name %}
+                            {% assign remaining_path = file.path | remove: dir.name | remove_first: '/' %}
+                            {% if remaining_path contains '/' %}
+                                <!-- Recursively render subdirectories -->
+                                {% assign subdir = remaining_path | split: '/' | first %}
+                                <li class="folder">{{ subdir }}
+                                    <ul>
+                                        <li><a href="{{ site.baseurl }}{{ file.path }}">{{ file.name }}</a></li>
+                                    </ul>
+                                </li>
+                            {% else %}
+                                <!-- Render files in the current directory -->
+                                <li><a href="{{ site.baseurl }}{{ file.path }}">{{ file.name }}</a></li>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </li>
         {% endfor %}
     </ul>
 </body>
