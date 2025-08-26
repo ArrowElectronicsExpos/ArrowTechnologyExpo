@@ -7,79 +7,49 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Arrow Technology Expo 2025 - PDFs</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 24px;
-      line-height: 1.4;
-      background-color: #f9f9f9;
-    }
-    h1 {
-      margin-bottom: 8px;
-    }
-    .pdf-section {
-      margin: 32px 0;
-    }
-    .pdf-title {
-      margin: 0 0 12px;
-      font-size: 1.2rem;
-      color: #222;
-    }
-    .viewer {
-      width: 100%;
-      height: 80vh; /* Adjust height if needed */
-      border: 1px solid #ccc;
-      display: block;
-      background: #fff;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    }
-    .fallback {
-      margin-top: 10px;
-      font-size: 0.95rem;
-    }
-    .fallback a {
-      color: #0366d6;
-      text-decoration: none;
-    }
-    .fallback a:hover {
-      text-decoration: underline;
-    }
+    body { font-family: Arial, sans-serif; margin: 0; padding: 24px; line-height: 1.5; background: #f9f9f9; }
+    h1 { margin: 0 0 12px; }
+    .pdf-section { margin: 28px 0; }
+    .pdf-title { margin: 0 0 10px; font-size: 1.1rem; }
+    .viewer { width: 100%; height: 80vh; border: 1px solid #ccc; background: #fff; }
+    .fallback { margin-top: 8px; }
+    .fallback a { color: #0366d6; text-decoration: none; }
+    .fallback a:hover { text-decoration: underline; }
+    .note { font-size: 0.92rem; color: #555; }
   </style>
 </head>
 <body>
   <h1>Arrow Technology Expo 2025</h1>
-  <p>View the documents below directly, or download them if needed.</p>
+  <p class="note">If inline rendering fails in some browsers, use the “Open / Download” links below each viewer.</p>
 
-  <!-- ===== PDF #1: Supplier List ===== -->
+  <!-- Build the correct URLs and escape spaces -->
+  {% assign pdf1 = '/docs/Chicago/ATE 2025 Supplier list.pdf' | relative_url | replace: ' ', '%20' %}
+  {% assign pdf2 = '/docs/Chicago/ArrowTechnologyExpo2025_ClassDescriptions.pdf' | relative_url | replace: ' ', '%20' %}
+
+  <!-- ===== PDF #1 ===== -->
   <section class="pdf-section" id="pdf-1">
     <h2 class="pdf-title">Supplier List</h2>
-    <object
-      class="viewer"
-      type="application/pdf"
-      data="{{ site.baseurl }}/docs/Chicago/ATE%202025%20Supplier%20list.pdf">
-    </object>
+    <object class="viewer" type="application/pdf" data="{{ pdf1 }}"></object>
     <div class="fallback">
       <strong>Can’t see it?</strong>
-      <a href="{{ site.baseurl }}/docs/Chicago/ATE%202025%20Supplier%20list.pdf" target="_blank">
-        Open / Download PDF
-      </a>
+      <a href="{{ pdf1 }}" target="_blank" rel="noopener">Open / Download PDF</a>
     </div>
   </section>
 
-  <!-- ===== PDF #2: Class Descriptions ===== -->
+  <!-- ===== PDF #2 ===== -->
   <section class="pdf-section" id="pdf-2">
     <h2 class="pdf-title">Class Descriptions</h2>
-    <object
-      class="viewer"
-      type="application/pdf"
-      data="{{ site.baseurl }}/docs/Chicago/ArrowTechnologyExpo2025_ClassDescriptions.pdf">
-    </object>
+    <object class="viewer" type="application/pdf" data="{{ pdf2 }}"></object>
     <div class="fallback">
       <strong>Can’t see it?</strong>
-      <a href="{{ site.baseurl }}/docs/Chicago/ArrowTechnologyExpo2025_ClassDescriptions.pdf" target="_blank">
-        Open / Download PDF
-      </a>
+      <a href="{{ pdf2 }}" target="_blank" rel="noopener">Open / Download PDF</a>
     </div>
   </section>
+
+  <!-- Optional debug (temporarily uncomment if still 404s) -->
+  <!--
+  <hr />
+  <p class="note">Debug: site.url = {{ site.url }} | site.baseurl = {{ site.baseurl }}</p>
+  -->
 </body>
 </html>
