@@ -2,66 +2,84 @@
 ---
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File Directory</title>
-    <style>
-      body {
-        font-family: Arial
-        , sans-serif;
-        padding: 20px;
-      }
-      ul {
-        list-style-type: none;
-        padding-left: 20px;
-      }
-      li {
-        margin-bottom: 10px;
-      }
-      a {
-        text-decoration: none;
-        color: #333;
-      }
-      a:hover {
-        text-decoration: underline;
-      }
-      .folder {
-        font-weight: bold;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>Available Files</h1>
-    <ul>
-      {% comment %} {% assign base_directories = site.static_files | map: "path" | map: "split:'/'" | map: "first" | uniq %} {% endcomment %}
-      {% assign base_directories = "{{ site.baseurl }}{{ site.static_files}}" | map: "path" | split: '/' | map: "first" | uniq %}
-      {% for file in site.static_files %}
-        <li>{{ file.path }}</li>
-      {% endfor %}
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Arrow Technology Expo 2025 - PDFs</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 24px;
+      line-height: 1.4;
+      background-color: #f9f9f9;
+    }
+    h1 {
+      margin-bottom: 8px;
+    }
+    .pdf-section {
+      margin: 32px 0;
+    }
+    .pdf-title {
+      margin: 0 0 12px;
+      font-size: 1.2rem;
+      color: #222;
+    }
+    .viewer {
+      width: 100%;
+      height: 80vh; /* Adjust height if needed */
+      border: 1px solid #ccc;
+      display: block;
+      background: #fff;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+    .fallback {
+      margin-top: 10px;
+      font-size: 0.95rem;
+    }
+    .fallback a {
+      color: #0366d6;
+      text-decoration: none;
+    }
+    .fallback a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h1>Arrow Technology Expo 2025</h1>
+  <p>View the documents below directly, or download them if needed.</p>
 
-      <p>base_directories: {{ base_directories | join: ", " }}</p>
-    {% comment %} 
-                                          {% for dir in base_directories %}
-                                            <li class="folder">{{ dir }}
-                                              <ul>
-                                                {% assign files_in_dir = site.static_files | where_exp: "file", "file.path contains dir" %}
-                                                {% assign directories = files_in_dir | group_by_exp: "file", "file.path | split: '/' | slice: 0, file.path | split: '/' | size - 2 | join: '/'" %}
-            
-                                                {% for subdir in directories %}
-                                                  <li class="folder">{{ subdir.name | replace_first: dir, "" }}/
-                                                    <ul>
-                                                      {% for file in subdir.items %}
-                                                        <li>
-                                                          <a href="{{ site.baseurl }}{{ file.path }}">{{ file.name }}</a>
-                                                        </li>
-                                                      {% endfor %}
-                                                    </ul>
-                                                  </li>
-                                                {% endfor %}
-                                              </ul>
-                                            </li>
-                              {% endfor %} {% endcomment %}
-    </ul>
-  </body>
+  <!-- ===== PDF #1: Supplier List ===== -->
+  <section class="pdf-section" id="pdf-1">
+    <h2 class="pdf-title">Supplier List</h2>
+    <object
+      class="viewer"
+      type="application/pdf"
+      data="{{ site.baseurl }}/docs/Chicago/ATE%202025%20Supplier%20list.pdf">
+    </object>
+    <div class="fallback">
+      <strong>Can’t see it?</strong>
+      <a href="{{ site.baseurl }}/docs/Chicago/ATE%202025%20Supplier%20list.pdf" target="_blank">
+        Open / Download PDF
+      </a>
+    </div>
+  </section>
+
+  <!-- ===== PDF #2: Class Descriptions ===== -->
+  <section class="pdf-section" id="pdf-2">
+    <h2 class="pdf-title">Class Descriptions</h2>
+    <object
+      class="viewer"
+      type="application/pdf"
+      data="{{ site.baseurl }}/docs/Chicago/ArrowTechnologyExpo2025_ClassDescriptions.pdf">
+    </object>
+    <div class="fallback">
+      <strong>Can’t see it?</strong>
+      <a href="{{ site.baseurl }}/docs/Chicago/ArrowTechnologyExpo2025_ClassDescriptions.pdf" target="_blank">
+        Open / Download PDF
+      </a>
+    </div>
+  </section>
+</body>
 </html>
