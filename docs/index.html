@@ -22,9 +22,15 @@
   <h1>Arrow Technology Expo 2025</h1>
   <p class="note">If inline rendering fails in some browsers, use the “Open / Download” links below each viewer.</p>
 
-  <!-- Build the correct URLs and escape spaces -->
-  {% assign pdf1 = '/docs/Chicago/ATE 2025 Supplier list.pdf' | relative_url | replace: ' ', '%20' %}
-  {% assign pdf2 = '/docs/Chicago/ArrowTechnologyExpo2025_ClassDescriptions.pdf' | relative_url | replace: ' ', '%20' %}
+  {%- comment -%}
+    IMPORTANT:
+    - This assumes GitHub Pages is publishing from the /docs folder.
+    - Therefore, files under /docs/Chicago/... are served at /Chicago/... (no /docs in the URL).
+    - If you switch Pages source to root/gh-pages, change the two assigns below to start with '/docs/...'.
+  {%- endcomment -%}
+
+  {%- assign pdf1 = '/Chicago/ATE 2025 Supplier list.pdf' | relative_url | replace: ' ', '%20' -%}
+  {%- assign pdf2 = '/Chicago/ArrowTechnologyExpo2025_ClassDescriptions.pdf' | relative_url | replace: ' ', '%20' -%}
 
   <!-- ===== PDF #1 ===== -->
   <section class="pdf-section" id="pdf-1">
@@ -46,10 +52,15 @@
     </div>
   </section>
 
-  <!-- Optional debug (temporarily uncomment if still 404s) -->
+  <!-- Optional: quick debug (uncomment temporarily if needed) -->
   <!--
   <hr />
-  <p class="note">Debug: site.url = {{ site.url }} | site.baseurl = {{ site.baseurl }}</p>
+  <p class="note">Computed links:</p>
+  <ul class="note">
+    <li>{{ pdf1 }}</li>
+    <li>{{ pdf2 }}</li>
+  </ul>
+  <p class="note">site.url = {{ site.url }} | site.baseurl = {{ site.baseurl }}</p>
   -->
 </body>
 </html>
